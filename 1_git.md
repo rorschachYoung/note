@@ -74,10 +74,10 @@ git reset --hard  [版本号]  版本回退
 #### git clone [github地址] [project_name]
     在当前文件夹下从远程仓库 [github地址] clone 项目并取名 [project_name]
 #### 开发完成后同步所需操作
-    git push 拉取
+    git pull 拉取
     git add .   添加到暂存区
     git commit -m 'content' 添加到历史区
-    git pull    历史区推送同步到远程仓库
+    git push   历史区推送同步到远程仓库
 # git回滚操作
 #### git checkout .       把暂存区回滚到工作区
 #### git reset HEAD .     把暂存区回滚到上一个暂存区

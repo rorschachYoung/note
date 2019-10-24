@@ -296,8 +296,9 @@ module.exports={
 ```js
 export default new Router({
   mode:'history',
-  base:'smilevue',
-  routes: []
+  base:'smilevue', /* 线上访问的 http://..../smilevue/index,这个base就是/smilevue 前缀 ,
+                      这样 下面的路由才会匹配到 /smielvue/index => path:'/index'  */ 
+  routes: [] 
 }
 ```
 **nginx配置**

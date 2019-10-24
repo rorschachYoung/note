@@ -1,0 +1,31 @@
+@url=http://www.rorscloud.top:4000
+
+
+###
+get {{url}}/user
+
+
+### 
+post {{url}}/reg
+Content-Type: application/json
+
+{
+    "name":"123",
+    "password":"456"
+}
+###
+post {{url}}/login
+Content-Type: application/json
+
+{
+    "name":"123",
+    "password":"456"
+}
+###
+post {{url}}/auth
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGE1MWYwYTg4YzU4YjYxMDdlM2ZlOTIiLCJpYXQiOjE1NzExMDI5OTJ9.miDv30tAsO0Pfbebt1j_0cBo7h42edPIliC291Xw9rY
+
+{
+    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGE1MWYwYTg4YzU4YjYxMDdlM2ZlOTIiLCJpYXQiOjE1NzExMDI5OTJ9.miDv30tAsO0Pfbebt1j_0cBo7h42edPIliC291Xw9rY"
+}

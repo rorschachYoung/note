@@ -348,7 +348,6 @@ module.exports = {
     /**
      * Source Maps
      */
-
     productionSourceMap: true,
 	// ......
   }
@@ -371,20 +370,35 @@ node index
 访问一下路径进行数据初始化
 访问项目路径http://120.55.57.19/smilevue/category
 
-第一步全局安装pm2
-pm2 start index.js
+
 
 ### 5.2.1 pm.yml
+第一步全局安装pm2
+不论是pm2还是nodemon这样的全局安装都会有一段  路径 -> 路径
+> /usr/local/src/node-v10.16.0-linux-x64/bin/npx -> /usr/local/src/node-v10.16.0-linux-x64/lib/node_modules/npx/index.js
+类似于上面的 箭头所指的路径,虽然全局安装了,但依旧无法全局使用,需要将这个安装的路径地址 添加到bin下也就是windows中的环境变量
+> ln -s /usr/local/src/node-v10.16.0-linux-x64/bin/npx /usr/local/bin/npx
+> ln -s /usr/local/src/node-v10.16.0-linux-x64/bin/pm2 /usr/local/bin/pm2
 pm.yml是pm2的配置文件
 ```yml
 apps:
-  - script: ./index.js
+  - script: index.js
     name: smilevue  #  pm2 start 执行会生成随机名称,name 用来指定服务名称
     env_production: #当执行 pm2 start pm.yml --producton 指定读取production配置
       NODE_ENV: production # 定义当前环境 production
-      HOST: localhost # 配置只能本地locakhost访问,外部只能通过NGINX代理
-      PORT: 4000
+      HOST: localhost # 配置只能本地localhost访问,外部只能通过NGINX代理
+      PORT: 4000 
+    watch: true
+    ignore_watch: 
+      - node_modules  # watch 不监听 node_modules  的文件变化
+      - logs             #  watch 不监听 logs 下面的文件变化
+    instance: 4     #  开启4个 进程
+    error_file: logs/error.log  # 把 console.error 的错误输入 记录到 指定文件夹
+    out_file: logs/out.log # 把 console.log 的错误输入 记录到 指定文件夹
+    merge_logs: true  # 如上开启了4个实例,对所有实例(也就是集群)进行日志合并
+    log_date_format: YY-MM-DD HH:mm:ss
 ```
+pm2 start app.js --watch  跟nodemon功能一样
 ### 5.2.2 pm 指令
 1.pm2 start index.js 启动index
 2.pm2 start pm2.yml  启动yml配置的服务,
@@ -393,4 +407,22 @@ apps:
 5.pm2 restart [name]  
 6 pm2 list  查看所有pm2启动的服务
 7.pm2 log [name] 查看指定服务的日志
+8.pm2 info [name|id]
+9.pm2 monit [name|id] 查看cpu内存等资源使用情况
+10.pm2 delete [name|id] 
+11.pm2 start app.js -i 4 会开启4个app实例
+12.pm2 start app.js -i 0 会根据服务器cpu核心数量创建实例
+13.pm2 scale app +3     给app添加3个实例
 
+关闭nodemon重复占用的端口问题
+ps -ef | grep nodemon 
+kill id 
+ps -ef | grep pm2 
+kill id 
+
+### corntab定时日志分割
+cornd 是deamon进程, crontab命令
+crontab -e 编辑
+crontab -l 展示定时任务列表
+* 0 * * *(对应 分时日月星) 凌晨0点执行shell任务
+> * 0 * * *  sh /home/log.sh 

@@ -73,7 +73,7 @@
 > cd /etc/yum.repos.d 
 > vim mongodb-org-4.0.repo 
 
-```bash
+```
 [mongodb-org-4.0]
 name=MongoDB Repository
 baseurl=http://mirrors.aliyun.com/mongodb/yum/redhat/7Server/mongodb-org/4.0/x86_64/

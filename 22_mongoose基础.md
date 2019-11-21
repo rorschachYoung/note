@@ -42,9 +42,7 @@ mongoose.connection.once('open',()=>{
     //dbconfig.js--------------------------------
     //声明配置选项
     module.exports = {
-        //数据链接地址
-        dbs:'mongodb://127.0.0.1:27017',
-
+        dbs:'mongodb://127.0.0.1:27017',//数据链接地址
     }
     //person.js----------------------------------
     // person就是表名 collection
@@ -150,7 +148,6 @@ async function getRelation(){
     console.log(category[0]) //效果同上
 }
 getRelation()
-
 
 //获取
 async function getPost(){

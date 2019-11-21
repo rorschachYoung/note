@@ -372,7 +372,8 @@ node index
 
 
 
-### 5.2.1 pm.yml
+## 6 pm2
+### 6.1 pm.yml
 第一步全局安装pm2
 不论是pm2还是nodemon这样的全局安装都会有一段  路径 -> 路径
 > /usr/local/src/node-v10.16.0-linux-x64/bin/npx -> /usr/local/src/node-v10.16.0-linux-x64/lib/node_modules/npx/index.js
@@ -388,18 +389,22 @@ apps:
       NODE_ENV: production # 定义当前环境 production
       HOST: localhost # 配置只能本地localhost访问,外部只能通过NGINX代理
       PORT: 4000 
+    env: 
+      NODE_ENV: production
     watch: true
+    exec_mode: cluster
     ignore_watch: 
       - node_modules  # watch 不监听 node_modules  的文件变化
       - logs             #  watch 不监听 logs 下面的文件变化
     instance: 4     #  开启4个 进程
+    instance: max     #  开启4个 进程
     error_file: logs/error.log  # 把 console.error 的错误输入 记录到 指定文件夹
     out_file: logs/out.log # 把 console.log 的错误输入 记录到 指定文件夹
     merge_logs: true  # 如上开启了4个实例,对所有实例(也就是集群)进行日志合并
     log_date_format: YY-MM-DD HH:mm:ss
 ```
 pm2 start app.js --watch  跟nodemon功能一样
-### 5.2.2 pm 指令
+### 6.2 pm 指令
 1.pm2 start index.js 启动index
 2.pm2 start pm2.yml  启动yml配置的服务,
 3.pm2 start pm2.yml --env production  启动yml配置的服务,指定环境
@@ -426,3 +431,9 @@ crontab -e 编辑
 crontab -l 展示定时任务列表
 * 0 * * *(对应 分时日月星) 凌晨0点执行shell任务
 > * 0 * * *  sh /home/log.sh 
+
+
+### windows->cmd-ab
+widnows下使用ab命令测试服务器请求benchmark
+-n  一共1000数量的请求, -c 一次并发100
+>ab -n 1000 -c 100 http://www.rorscloud.top/admin/user

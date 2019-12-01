@@ -3,7 +3,6 @@
 安装mysql模块
 > npm i mysql 
 ```js
-
 const mysql = require('mysql')
 const xss = require('xss')
 let conn = mysql.createConnection({

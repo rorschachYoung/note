@@ -104,7 +104,8 @@ net:
 4 运行mysqld
 >systemctl start mysqld
 5 获取初始密码
-> grep 'temporary password' /var/log/mysqld.
+能获取到密码则跳到第8步
+> grep 'temporary password' /var/log/mysqld.log
 6 有可能获取不到密码,这是因为安装的可能是5.6版本的mysql,注意查看mysql版本,5.6跟5.7,以及最新版的8可能都不会一样
 7 mysql5.6版本解决修改密码等问题
 发现进不去系统无法执行 "设置密码"操作,请注意修改无密码登录
@@ -115,7 +116,10 @@ net:
 > SET PASSWORD = PASSWORD('12345');
 >vim /etc/my.cnf
 8 mysql5.7版本
-设置密码
+具体参考https://www.cnblogs.com/ivictor/p/5142809.html
+设置密码,首先设置validate_password_policy=0,表示允许设置12345这种简单密码,然后修改密码,
+> set global validate_password_policy=0;
+> set global validate_password_length=1;
 >ALTER USER USER() IDENTIFIED BY '12345';
 9 给数据库设置可远程链接
 >grant all privileges on *.* to root@"%" identified by "12345";
@@ -412,7 +416,7 @@ pm2 start app.js --watch  跟nodemon功能一样
 5.pm2 restart [name]  
 6 pm2 list  查看所有pm2启动的服务
 7.pm2 log [name] 查看指定服务的日志
-8.pm2 info [name|id]
+8.pm2 info [name|id]  可以查看很多信息,比如日志存放路径
 9.pm2 monit [name|id] 查看cpu内存等资源使用情况
 10.pm2 delete [name|id] 
 11.pm2 start app.js -i 4 会开启4个app实例
